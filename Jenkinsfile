@@ -1,36 +1,20 @@
 pipeline {
   agent any
   stages {
-    stage('dev') {
-      parallel {
-        stage('dev') {
-          steps {
-            echo 'development stage'
-          }
-        }
-
-        stage('Test') {
-          steps {
-            echo 'Testing stage'
-          }
-        }
-
-        stage('Plugin') {
-          steps {
-            echo 'Plugin stage'
-          }
-        }
-
+    stage('git checkout') {
+      steps {
+        echo 'development stage'
+        git(url: 'https://github.com/gopilavuri/SimpleWebApp.git', branch: 'master')
       }
     }
 
-    stage('QA') {
+    stage('sonarqube') {
       steps {
         echo 'QA stage'
       }
     }
 
-    stage('UAT') {
+    stage('Build') {
       steps {
         echo 'UAT stage'
       }
@@ -42,9 +26,9 @@ pipeline {
       }
     }
 
-    stage('Operate') {
+    stage('slack') {
       steps {
-        echo 'Operate'
+        slackSend()
       }
     }
 
